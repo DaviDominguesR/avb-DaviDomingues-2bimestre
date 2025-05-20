@@ -3,31 +3,27 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const [countries, setCountries] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    axios.get('https://restcountries.com/v3.1/all')
-      .then(response => {
-        setCountries(response.data);
-      })
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(response => setPosts(response.data))
       .catch(error => console.log(error));
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-8">Lista de Países</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {countries.map(country => (
-          <div key={country.cca3} className="bg-white shadow-lg rounded-lg p-4 text-center">
-            <Link to={`/detalhes/${country.cca3}`}>
-              <img
-                src={country.flags.png}
-                alt={country.name.common}
-                className="w-full h-32 object-contain mb-4 mx-auto"
-              />
-              <h2 className="text-xl font-semibold">{country.name.common}</h2>
-            </Link>
-          </div>
+    <div className="max-w-5xl mx-auto p-6 bg-gray-900 min-h-screen text-gray-200">
+      <h1 className="text-4xl font-extrabold mb-8 text-gray-100 tracking-wide">Posts Recentes</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {posts.map(post => (
+          <Link 
+            key={post.id} 
+            to={`/detalhes/${post.id}`} 
+            className="block p-5 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors shadow-md"
+          >
+            <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+            <p className="text-gray-400 text-sm line-clamp-3">{post.body}</p>
+          </Link>
         ))}
       </div>
     </div>

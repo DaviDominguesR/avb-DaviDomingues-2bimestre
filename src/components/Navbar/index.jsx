@@ -2,16 +2,19 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md px-6 py-3 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900 shadow-md px-6 py-3 flex items-center justify-between">
       {/* Logo ou título */}
-      <Link to="/" className="text-gray-800 text-xl font-semibold hover:text-blue-600 transition-colors duration-300">
+      <Link
+        to="/"
+        className="text-gray-200 text-xl font-bold tracking-wide hover:text-blue-500 transition-colors duration-300"
+      >
         Home
       </Link>
 
       {/* Botão hamburguer para mobile (pode remover se quiser) */}
       <div className="md:hidden">
         <button
-          className="text-gray-800 focus:outline-none hover:text-blue-600 transition-colors duration-300"
+          className="text-gray-200 focus:outline-none hover:text-blue-500 transition-colors duration-300"
           aria-label="Menu"
         >
           <svg

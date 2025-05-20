@@ -3,27 +3,23 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Detalhes = () => {
-  const { codigo } = useParams();  // Pega o código do país a partir da URL
-  const [pais, setPais] = useState(null);
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
 
   useEffect(() => {
-    if (codigo) {
-      // A URL de requisição agora está correta
-      axios.get(`https://restcountries.com/v3.1/alpha/${codigo}`)
-        .then((res) => setPais(res.data[0]))
-        .catch((err) => console.error('Erro ao buscar país:', err));
+    if(id) {
+      axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        .then(res => setPost(res.data))
+        .catch(err => console.error(err));
     }
-  }, [codigo]); // Refaz a requisição sempre que o parâmetro mudar
+  }, [id]);
 
-  if (!pais) return <p>Carregando...</p>;
+  if (!post) return <p className="text-gray-300 p-6">Carregando...</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{pais.name.common}</h1>
-      <img src={pais.flags.svg} alt={pais.name.common} className="w-48 mb-4" />
-      <p><strong>Capital:</strong> {pais.capital?.[0]}</p>
-      <p><strong>Região:</strong> {pais.region}</p>
-      <p><strong>População:</strong> {pais.population.toLocaleString()}</p>
+    <div className="max-w-3xl mx-auto p-6 bg-gray-900 min-h-screen text-gray-200">
+      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+      <p className="text-gray-400 leading-relaxed whitespace-pre-line">{post.body}</p>
     </div>
   );
 };
