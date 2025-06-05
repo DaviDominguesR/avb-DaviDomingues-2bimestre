@@ -1,25 +1,46 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useFavoritos } from '../../contexts/FavoriteContext';
 
 const Detalhes = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  const { favoritos, toggleFavorito } = useFavoritos();
 
   useEffect(() => {
-    if(id) {
-      axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    if (id) {
+      axios
+        .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
         .then(res => setPost(res.data))
         .catch(err => console.error(err));
     }
   }, [id]);
 
-  if (!post) return <p className="text-gray-300 p-6">Carregando...</p>;
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center text-gray-600">
+        Carregando...
+      </div>
+    );
+  }
+
+  const isFavorito = favoritos.some(fav => fav.id === post.id);
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-gray-900 min-h-screen text-gray-200">
-      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-      <p className="text-gray-400 leading-relaxed whitespace-pre-line">{post.body}</p>
+    <div className="min-h-screen bg-blue-50 text-gray-800 py-20 px-6">
+      <div className="max-w-3xl mx-auto bg-white border border-blue-100 rounded-xl p-8 shadow-sm">
+        <h1 className="text-2xl font-semibold text-blue-800 mb-4">{post.title}</h1>
+        <p className="text-gray-700 leading-relaxed whitespace-pre-line">{post.body}</p>
+
+        <button
+          onClick={() => toggleFavorito(post)}
+          className="mt-6 text-2xl transition-transform hover:scale-110"
+          title={isFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+        >
+          {isFavorito ? '❤️' : '🤍'}
+        </button>
+      </div>
     </div>
   );
 };
